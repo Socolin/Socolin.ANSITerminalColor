@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socolin.ANSITerminalColor", "Socolin.ANSITerminalColor\Socolin.ANSITerminalColor.csproj", "{8B05E90D-8DB2-4523-BC22-76914DA1E6C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socolin.ANSITerminalColor.Tests", "Socolin.ANSITerminalColor.Tests\Socolin.ANSITerminalColor.Tests.csproj", "{187F2B2F-4AC0-48EB-9DEF-1CE683FDFF42}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B05E90D-8DB2-4523-BC22-76914DA1E6C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B05E90D-8DB2-4523-BC22-76914DA1E6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B05E90D-8DB2-4523-BC22-76914DA1E6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B05E90D-8DB2-4523-BC22-76914DA1E6C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{187F2B2F-4AC0-48EB-9DEF-1CE683FDFF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{187F2B2F-4AC0-48EB-9DEF-1CE683FDFF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{187F2B2F-4AC0-48EB-9DEF-1CE683FDFF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{187F2B2F-4AC0-48EB-9DEF-1CE683FDFF42}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
