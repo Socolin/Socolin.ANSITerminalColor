@@ -1,3 +1,4 @@
+using System.Globalization;
 using JetBrains.Annotations;
 
 namespace Socolin.ANSITerminalColor;
@@ -7,6 +8,17 @@ public readonly struct TerminalRgbColor
 {
 	public static readonly TerminalRgbColor None = new(-1, -1, -1);
 	public static TerminalRgbColor From(int r, int g, int b) => new(r, g, b);
+	public static TerminalRgbColor FromHex(string hex)
+	{
+		if (hex.StartsWith("#"))
+			hex = hex.Substring(1);
+		if (hex.Length != 6)
+			throw new ArgumentException("Invalid hex form, should be RRGGBB", nameof(hex));
+		var r = int.Parse(hex.Substring(0, 2), NumberStyles.HexNumber);
+		var g = int.Parse(hex.Substring(2, 2), NumberStyles.HexNumber);
+		var b = int.Parse(hex.Substring(4, 2), NumberStyles.HexNumber);
+		return new TerminalRgbColor(r, g, b);
+	}
 
 	public int R { get; }
 	public int G { get; }

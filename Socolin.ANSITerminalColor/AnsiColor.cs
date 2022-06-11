@@ -64,6 +64,15 @@ public readonly struct AnsiColor
 		Codes = codes;
 	}
 
+	public string Colorize(string text)
+	{
+		var sb = new StringBuilder();
+		ToEscapeSequence(sb);
+		sb.Append(text);
+		Reset.ToEscapeSequence(sb);
+		return sb.ToString();
+	}
+
 	public override string ToString()
 	{
 		return ToEscapeSequence();
