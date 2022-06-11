@@ -23,7 +23,7 @@ public readonly struct AnsiColor
 	public static AnsiColor Background(int r, int g, int b) => new(TerminalControlSequences.SetBackgroundColor, new TerminalRgbColor(r, g, b));
 	public static AnsiColor Composite(params AnsiColor[] codes) => new(codes);
 
-	public static string ColorizeText(string text, AnsiColor code)
+	public static string ColorizeText(string? text, AnsiColor code)
 	{
 		var sb = new StringBuilder();
 		code.ToEscapeSequence(sb);
@@ -64,7 +64,7 @@ public readonly struct AnsiColor
 		Codes = codes;
 	}
 
-	public string Colorize(string text)
+	public string Colorize(string? text)
 	{
 		var sb = new StringBuilder();
 		ToEscapeSequence(sb);
