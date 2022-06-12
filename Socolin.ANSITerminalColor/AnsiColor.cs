@@ -133,7 +133,7 @@ public readonly struct AnsiColor
 		return sb.ToString();
 	}
 
-	private void ToResetSequence(StringBuilder sb)
+	public void ToResetSequence(StringBuilder sb)
 	{
 		sb.Append(EscapeCode);
 		sb.Append('[');
