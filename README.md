@@ -9,7 +9,7 @@ Helpers to generate [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escap
 
 [MIT](Socolin.ANSITerminalColor/LICENSES.md)
 
-## Example
+## Examples
 
 Colorize a text before printing it to the console
 
@@ -20,6 +20,7 @@ Console.WriteLine(AnsiColor.ColorizeText("Colored Text", AnsiColor.Foreground(Te
 
 Composite multiple modifiers
 
+![Composite](doc/images/composite.png)
 ```csharp
 Console.WriteLine(AnsiColor.ColorizeText(
     "some-text",
@@ -38,5 +39,31 @@ Console.WriteLine(AnsiColor.ColorizeText(
     AnsiColor.Foreground(255, 16, 240)
 );
 ```
+
+Using `Colorize()`
+
+```csharp
+Console.WriteLine(AnsiColor.Foreground(45, 150, 240).Colorize("Text"));
+```
+
+Use multiple code on the same text
+
+![Superposed](doc/images/superposed.png)
+
+```csharp
+var boldBlue = AnsiColor.Composite(
+    AnsiColor.Foreground(Terminal256ColorCodes.CadetBlueC73),
+    AnsiColor.Bold
+);
+var orangeBackgroundUnderline = AnsiColor.Composite(
+    AnsiColor.Background(Terminal256ColorCodes.Orange4C58),
+    AnsiColor.Underline
+);
+Console.WriteLine(boldBlue.Colorize("Bold Blue " + orangeBackgroundUnderline.Colorize("Orange Underlined") + " Bold Blue"));
+Console.WriteLine(orangeBackgroundUnderline.Colorize("Orange Underlined " + boldBlue.Colorize("Bold Blue") + " Orange Underlined"));
+```
+
+
+
 
 More escape sequence can be used when using `new AnsiColor(...)`

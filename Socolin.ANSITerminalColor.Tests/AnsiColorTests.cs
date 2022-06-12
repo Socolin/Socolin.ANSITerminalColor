@@ -82,11 +82,18 @@ public class AnsiColorTests
 		Console.WriteLine(compositeCode + "Test" + AnsiColor.Reset);
 		Console.WriteLine(AnsiColor.ColorizeText("Colored Text", compositeCode) + " non colored text");
 
+		Console.WriteLine(AnsiColor.Foreground(45, 150, 240).Colorize("Text"));
 
 		Console.WriteLine(AnsiColor.Foreground(Terminal256ColorCodes.Aquamarine1C122) + "Test" + AnsiColor.Reset);
 		Console.WriteLine(AnsiColor.Foreground(Terminal256ColorCodes.Aquamarine1C122) + "Test" + AnsiColor.Reset);
 
-
+		Console.WriteLine(AnsiColor.ColorizeText(
+			"some-text",
+			AnsiColor.Composite(
+				AnsiColor.Bold,
+				AnsiColor.Underline,
+				AnsiColor.Foreground(Terminal256ColorCodes.Gold3C178)
+			)));
 		var boldBlue = AnsiColor.Composite(
 			AnsiColor.Foreground(Terminal256ColorCodes.CadetBlueC73),
 			AnsiColor.Bold
