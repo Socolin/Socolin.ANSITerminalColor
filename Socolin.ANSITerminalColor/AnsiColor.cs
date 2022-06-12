@@ -114,6 +114,13 @@ public readonly struct AnsiColor
 		return ToEscapeSequence();
 	}
 
+	public string ToResetSequence()
+	{
+		var sb = new StringBuilder();
+		ToEscapeSequence(sb);
+		return sb.ToString();
+	}
+
 	public void ToString(StringBuilder sb)
 	{
 		ToEscapeSequence(sb);
