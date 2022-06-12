@@ -35,30 +35,30 @@ public readonly struct AnsiColor
 		return sb.ToString();
 	}
 
-	public readonly TerminalControlSequences ControlSequences = TerminalControlSequences.None;
+	public readonly TerminalControlSequences ControlSequence = TerminalControlSequences.None;
 	public readonly Terminal256ColorCodes ColorCode256 = Terminal256ColorCodes.None;
 	public readonly TerminalRgbColor RgbColorCode = TerminalRgbColor.None;
 
-	public AnsiColor(TerminalControlSequences controlSequences)
+	public AnsiColor(TerminalControlSequences controlSequence)
 	{
-		ControlSequences = controlSequences;
-		switch (ControlSequences)
+		ControlSequence = controlSequence;
+		switch (ControlSequence)
 		{
 			case TerminalControlSequences.SetForegroundColor:
 			case TerminalControlSequences.SetBackgroundColor:
-				throw new InvalidColorException($"{ControlSequences} requires a color parameter");
+				throw new InvalidColorException($"{ControlSequence} requires a color parameter");
 		}
 	}
 
-	public AnsiColor(TerminalControlSequences controlSequences, Terminal256ColorCodes colorCode256)
+	public AnsiColor(TerminalControlSequences controlSequence, Terminal256ColorCodes colorCode256)
 	{
-		ControlSequences = controlSequences;
+		ControlSequence = controlSequence;
 		ColorCode256 = colorCode256;
 	}
 
-	public AnsiColor(TerminalControlSequences controlSequences, TerminalRgbColor rgbColor)
+	public AnsiColor(TerminalControlSequences controlSequence, TerminalRgbColor rgbColor)
 	{
-		ControlSequences = controlSequences;
+		ControlSequence = controlSequence;
 		RgbColorCode = rgbColor;
 	}
 
@@ -116,21 +116,21 @@ public readonly struct AnsiColor
 
 	public void ToEscapeParameters(StringBuilder sb)
 	{
-		switch (ControlSequences)
+		switch (ControlSequence)
 		{
 			case TerminalControlSequences.SetForegroundColor:
 			case TerminalControlSequences.SetBackgroundColor:
-				sb.Append((int)ControlSequences);
+				sb.Append((int)ControlSequence);
 				sb.Append(';');
 				if (ColorCode256 != Terminal256ColorCodes.None)
 					sb.Append(ColorCode256.ToColorParameter());
 				else if (RgbColorCode != TerminalRgbColor.None)
 					sb.Append(RgbColorCode.ToColorParameter());
 				else
-					throw new InvalidColorException($"{ControlSequences} requires a color parameter");
+					throw new InvalidColorException($"{ControlSequence} requires a color parameter");
 				break;
 			default:
-				sb.Append((int)ControlSequences);
+				sb.Append((int)ControlSequence);
 				break;
 		}
 	}
