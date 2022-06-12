@@ -3,7 +3,6 @@ using JetBrains.Annotations;
 namespace Socolin.ANSITerminalColor;
 
 [PublicAPI]
-[Flags]
 public enum TerminalControlSequences
 {
 	None = -1,
