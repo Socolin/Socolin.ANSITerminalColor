@@ -28,14 +28,17 @@ public readonly struct AnsiColor
 #endif
 	public static string? ColorizeText(string? text, AnsiColor code)
 	{
+		if (text == null)
+			return null;
 		var sb = new StringBuilder();
 		code.ToEscapeSequence(sb);
 		sb.Append(text);
-		Reset.ToEscapeSequence(sb);
+		code.ToResetSequence(sb);
 		return sb.ToString();
 	}
 
 	public readonly TerminalControlSequences ControlSequence = TerminalControlSequences.None;
+	public readonly TerminalControlSequences ResetSequence = TerminalControlSequences.Reset;
 	public readonly Terminal256ColorCodes ColorCode256 = Terminal256ColorCodes.None;
 	public readonly TerminalRgbColor RgbColorCode = TerminalRgbColor.None;
 
@@ -48,18 +51,48 @@ public readonly struct AnsiColor
 			case TerminalControlSequences.SetBackgroundColor:
 				throw new InvalidColorException($"{ControlSequence} requires a color parameter");
 		}
+
+		ResetSequence = GetResetSequence(controlSequence);
 	}
 
 	public AnsiColor(TerminalControlSequences controlSequence, Terminal256ColorCodes colorCode256)
 	{
 		ControlSequence = controlSequence;
 		ColorCode256 = colorCode256;
+		ResetSequence = GetResetSequence(controlSequence);
 	}
 
 	public AnsiColor(TerminalControlSequences controlSequence, TerminalRgbColor rgbColor)
 	{
 		ControlSequence = controlSequence;
 		RgbColorCode = rgbColor;
+		ResetSequence = GetResetSequence(controlSequence);
+	}
+
+	private TerminalControlSequences GetResetSequence(TerminalControlSequences controlSequence)
+	{
+		switch (ControlSequence)
+		{
+			case TerminalControlSequences.SetForegroundColor:
+				return TerminalControlSequences.DefaultForegroundColor;
+			case TerminalControlSequences.SetBackgroundColor:
+				return TerminalControlSequences.DefaultBackgroundColor;
+			case TerminalControlSequences.Bold:
+				return TerminalControlSequences.Faint;
+			case TerminalControlSequences.RapidBlink:
+			case TerminalControlSequences.SlowBlink:
+				return TerminalControlSequences.NotBlinking;
+			case TerminalControlSequences.Strike:
+				return TerminalControlSequences.NotCrossedOut;
+			case TerminalControlSequences.Underline:
+				return TerminalControlSequences.NotUnderline;
+			case TerminalControlSequences.Italic:
+				return TerminalControlSequences.NeitherItalicNorBlackletter;
+			case TerminalControlSequences.Hide:
+				return TerminalControlSequences.Reveal;
+		}
+
+		return TerminalControlSequences.Reset;
 	}
 
 	public AnsiColor(params AnsiColor[] codes)
@@ -72,7 +105,7 @@ public readonly struct AnsiColor
 		var sb = new StringBuilder();
 		ToEscapeSequence(sb);
 		sb.Append(text);
-		Reset.ToEscapeSequence(sb);
+		ToResetSequence(sb);
 		return sb.ToString();
 	}
 
@@ -91,6 +124,28 @@ public readonly struct AnsiColor
 		var sb = new StringBuilder();
 		ToEscapeSequence(sb);
 		return sb.ToString();
+	}
+
+	private void ToResetSequence(StringBuilder sb)
+	{
+		sb.Append(EscapeCode);
+		sb.Append('[');
+
+		if (Codes != null && Codes.Length > 0)
+		{
+			foreach (var colorCode in Codes)
+			{
+				sb.Append((int)colorCode.ResetSequence);
+				sb.Append(';');
+			}
+
+			sb.Length--;
+			sb.Append('m');
+			return;
+		}
+
+		sb.Append((int)ResetSequence);
+		sb.Append('m');
 	}
 
 	public void ToEscapeSequence(StringBuilder sb)
