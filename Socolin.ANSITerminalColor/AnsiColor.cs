@@ -23,7 +23,10 @@ public readonly struct AnsiColor
 	public static AnsiColor Background(int r, int g, int b) => new(TerminalControlSequences.SetBackgroundColor, new TerminalRgbColor(r, g, b));
 	public static AnsiColor Composite(params AnsiColor[] codes) => new(codes);
 
-	public static string ColorizeText(string? text, AnsiColor code)
+#if NET3_0_OR_GREATER
+	[return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("text")]
+#endif
+	public static string? ColorizeText(string? text, AnsiColor code)
 	{
 		var sb = new StringBuilder();
 		code.ToEscapeSequence(sb);
