@@ -6,6 +6,7 @@ namespace Socolin.ANSITerminalColor;
 [PublicAPI]
 public readonly struct AnsiColor
 {
+	public static bool NoColor = false;
 	private const char EscapeCode = '\x1b';
 	public AnsiColor[]? Codes { get; } = null;
 
@@ -100,8 +101,14 @@ public readonly struct AnsiColor
 		Codes = codes;
 	}
 
-	public string Colorize(string? text)
+
+#if NET3_0_OR_GREATER
+	[return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("text")]
+#endif
+	public string? Colorize(string? text)
 	{
+		if (NoColor)
+			return text;
 		var sb = new StringBuilder();
 		ToEscapeSequence(sb);
 		sb.Append(text);
@@ -116,6 +123,8 @@ public readonly struct AnsiColor
 
 	public string ToResetSequence()
 	{
+		if (NoColor)
+			return string.Empty;
 		var sb = new StringBuilder();
 		ToResetSequence(sb);
 		return sb.ToString();
@@ -128,6 +137,9 @@ public readonly struct AnsiColor
 
 	public string ToEscapeSequence()
 	{
+		if (NoColor)
+			return string.Empty;
+
 		var sb = new StringBuilder();
 		ToEscapeSequence(sb);
 		return sb.ToString();
@@ -135,6 +147,9 @@ public readonly struct AnsiColor
 
 	public void ToResetSequence(StringBuilder sb)
 	{
+		if (NoColor)
+			return;
+
 		sb.Append(EscapeCode);
 		sb.Append('[');
 
@@ -157,6 +172,9 @@ public readonly struct AnsiColor
 
 	public void ToEscapeSequence(StringBuilder sb)
 	{
+		if (NoColor)
+			return;
+
 		sb.Append(EscapeCode);
 		sb.Append('[');
 		if (Codes != null && Codes.Length > 0)
@@ -176,7 +194,7 @@ public readonly struct AnsiColor
 		sb.Append('m');
 	}
 
-	public void ToEscapeParameters(StringBuilder sb)
+	private void ToEscapeParameters(StringBuilder sb)
 	{
 		switch (ControlSequence)
 		{
