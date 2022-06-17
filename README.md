@@ -9,6 +9,10 @@ Helpers to generate [ANSI escape codes](https://en.wikipedia.org/wiki/ANSI_escap
 
 [MIT](Socolin.ANSITerminalColor/LICENSES.md)
 
+## Disable color
+
+You can disable coloring with `AnsiColor.NoColor = true`
+
 ## Examples
 
 Colorize a text before printing it to the console
